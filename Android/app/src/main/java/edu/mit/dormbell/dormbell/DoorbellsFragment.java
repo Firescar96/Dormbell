@@ -109,9 +109,7 @@ public class DoorbellsFragment extends ListFragment implements AbsListView.OnIte
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (null != mListener) {
-            // Notify the active callbacks interface (the activity, if the
-            // fragment is attached to one) that an item has been selected.
-            mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
+
         }
     }
 
@@ -140,7 +138,7 @@ public class DoorbellsFragment extends ListFragment implements AbsListView.OnIte
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(String id);
+        public void onFragmentInteraction(int id);
     }
 
 }

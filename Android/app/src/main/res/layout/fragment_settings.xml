@@ -20,18 +20,20 @@
         android:textColor="#ffffffff"
         android:layout_alignParentTop="true" />
 
-    <TextView
+    <Switch
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/settings_notifications"
-        android:id="@+id/notificationDescription"
+        android:id="@+id/notifications"
+        android:layout_marginRight="56dp"
+        android:layout_marginEnd="56dp"
+        android:checked="false"
         android:textSize="30sp"
         android:textColor="#ffffffff"
         android:layout_above="@+id/themeDesription"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="62dp" />
+        android:layout_marginBottom="60dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -44,7 +46,7 @@
         android:layout_above="@+id/deleteDescription"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="62dp" />
+        android:layout_marginBottom="60dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -54,7 +56,7 @@
         android:id="@+id/deleteDescription"
         android:textSize="30sp"
         android:textColor="#ffffffff"
-        android:layout_marginBottom="54dp"
+        android:layout_marginBottom="60dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="false" />
@@ -66,8 +68,7 @@
         android:id="@+id/button2"
         android:layout_marginTop="43dp"
         android:layout_below="@+id/disturb"
-        android:layout_toRightOf="@+id/notificationDescription"
-        android:layout_toEndOf="@+id/notificationDescription" />
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
@@ -75,9 +76,9 @@
         android:text="New Button"
         android:id="@+id/button3"
         android:layout_marginTop="40dp"
-        android:layout_below="@+id/textView4"
-        android:layout_toRightOf="@+id/textView4"
-        android:layout_toEndOf="@+id/textView4" />
+        android:layout_below="@+id/button2"
+        android:layout_toEndOf="@+id/textView4"
+        android:layout_alignLeft="@+id/button2" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -88,8 +89,7 @@
         android:textSize="30sp"
         android:textColor="#ffffffff"
         android:layout_alignBottom="@+id/button2"
-        android:layout_toLeftOf="@+id/button2"
-        android:layout_toStartOf="@+id/button2" />
+        android:layout_toLeftOf="@+id/button2" />
 
     <TextView
         android:layout_width="wrap_content"
