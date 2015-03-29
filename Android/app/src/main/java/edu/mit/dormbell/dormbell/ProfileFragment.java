@@ -1,13 +1,12 @@
 package edu.mit.dormbell.dormbell;
 
 import android.app.Activity;
-import android.support.v4.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,9 +19,13 @@ import android.view.ViewGroup;
 public class ProfileFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
 
+    static MainActivity context = MainActivity.context;
+
     private int section_number;
 
     private OnFragmentInteractionListener mListener;
+
+    private View frame;
 
     /**
      * Returns a new instance of this fragment for the given section
@@ -46,19 +49,21 @@ public class ProfileFragment extends Fragment {
         if (getArguments() != null) {
             section_number = getArguments().getInt(ARG_SECTION_NUMBER);
         }
+        setRetainInstance(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+        frame = inflater.inflate(R.layout.fragment_profile, container, false);
+        return frame;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onFragmentInteraction(frame.getId());
         }
     }
 
@@ -73,6 +78,11 @@ public class ProfileFragment extends Fragment {
         }
         ((MainActivity) activity).onSectionAttached(
                 getArguments().getInt(ARG_SECTION_NUMBER));
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -93,7 +103,7 @@ public class ProfileFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
+        public void onFragmentInteraction(int id);
     }
 
 }

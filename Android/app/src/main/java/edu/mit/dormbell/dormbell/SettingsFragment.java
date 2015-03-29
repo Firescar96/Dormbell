@@ -2,12 +2,12 @@ package edu.mit.dormbell.dormbell;
 
 import android.app.Activity;
 import android.app.TimePickerDialog;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Switch;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
@@ -29,6 +29,8 @@ public class SettingsFragment extends Fragment implements TimePickerDialog.OnTim
     private int section_number;
 
     private OnFragmentInteractionListener mListener;
+
+    private View frame;
 
     /**
      * Returns a new instance of this fragment for the given section
@@ -58,13 +60,14 @@ public class SettingsFragment extends Fragment implements TimePickerDialog.OnTim
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+        frame = inflater.inflate(R.layout.fragment_settings, container, false);
+        return frame;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+    public void onButtonPressed(View v) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onFragmentInteraction(frame.getId());
         }
     }
 
@@ -98,6 +101,15 @@ public class SettingsFragment extends Fragment implements TimePickerDialog.OnTim
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Switch disturb= ((Switch) frame.findViewById(R.id.disturb));
+        outState.putSerializable("disturb", disturb.isChecked());
+        Switch notifications= ((Switch) frame.findViewById(R.id.notifications));
+        outState.putSerializable("notifications", notifications.isChecked());
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
@@ -115,7 +127,7 @@ public class SettingsFragment extends Fragment implements TimePickerDialog.OnTim
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
+        public void onFragmentInteraction(int id);
     }
 
 }

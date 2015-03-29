@@ -122,7 +122,7 @@ if (Meteor.isServer) {
 			if (toUsr[i] == null) 
 				continue;
 			
-			ivar hostUsr = Users.findOne({username:query.username});
+			var hostUsr = Users.findOne({username:query.username});
 			//console.log(toUsr[i].location);
 			//console.log(Users.findOne({username:query.event.host}));
 			if(toUsr[i].location.latitude != undefined)
@@ -140,8 +140,8 @@ if (Meteor.isServer) {
 		var message = new  gcm.Message();
 		if(query.ring == true)
 		{
-			message.sender = "\""query.sender"\"",
-			message.lock="\""query.lock"\""
+			message.sender = "\""+query.sender+"\"",
+			message.lock="\""+query.lock+"\""
 		}
 		
 		sender.send(message, registrationIds, 10, function (err, result) {

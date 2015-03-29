@@ -58,7 +58,6 @@ public class FeedbackFragment extends Fragment {
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
         }
     }
 
@@ -71,8 +70,8 @@ public class FeedbackFragment extends Fragment {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
         }
-        ((MainActivity) activity).onSectionAttached(
-                getArguments().getInt(ARG_SECTION_NUMBER));
+       // ((MainActivity) activity).onSectionAttached(
+       //         getArguments().getInt(ARG_SECTION_NUMBER));
     }
 
     @Override
@@ -93,7 +92,7 @@ public class FeedbackFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
+        public void onFragmentInteraction(int id);
     }
 
 }

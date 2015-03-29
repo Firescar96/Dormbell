@@ -1,12 +1,13 @@
 package edu.mit.dormbell.dormbell;
 
 import android.app.Activity;
-import android.support.v4.app.Fragment;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import edu.mit.dormbell.org.json.json.JSONObject;
 
 
 /**
@@ -68,9 +69,13 @@ public class RingRingFragment extends Fragment {
         return frame;
     }
 
-    public void onBell(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+    public void onBell(View v) {
+        JSONObject data = new JSONObject();
+        try {
+            data.append("username", context.appData.getString("username"));
+        }
+        catch (Exception e) {
+
         }
     }
 
@@ -83,8 +88,8 @@ public class RingRingFragment extends Fragment {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
         }
-        ((MainActivity) activity).onSectionAttached(
-                getArguments().getInt(ARG_SECTION_NUMBER));
+        //((MainActivity) activity).onSectionAttached(
+                //getArguments().getInt(ARG_SECTION_NUMBER));
     }
 
     @Override
@@ -105,7 +110,7 @@ public class RingRingFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
+        public void onFragmentInteraction(int id);
     }
 
 }

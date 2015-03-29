@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Looper;
@@ -50,7 +49,10 @@ import edu.mit.dormbell.org.json.json.JSONArray;
 import edu.mit.dormbell.org.json.json.JSONObject;
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, RingRingFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentInteractionListener {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks,
+        ProfileFragment.OnFragmentInteractionListener, RingRingFragment.OnFragmentInteractionListener,
+        DoorbellsFragment.OnFragmentInteractionListener, LeaderboardFragment.OnFragmentInteractionListener,
+        SettingsFragment.OnFragmentInteractionListener, FeedbackFragment.OnFragmentInteractionListener {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -74,12 +76,18 @@ public class MainActivity extends ActionBarActivity
     LocationServices locServices;
     String regid;
 
+    //identifiers for the fragments
+    private static final int PROFILE=1;
+    private static final int RING_RING=2;
+    private static final int DOORBELL=3;
+    private static final int LEADERBOARD=4;
+    private static final int SETTINGS=5;
+    private static final int FEEDBACK=6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         context = this;
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
@@ -101,6 +109,8 @@ public class MainActivity extends ActionBarActivity
                 GCMIntentService.registerInBackground();
         } else
             System.out.println("No valid Google Play Services APK found.");
+
+
 
         if(getIntent().getDataString() != null)
             if(getIntent().getDataString().contains("18.181.2.180:666"))
@@ -166,7 +176,7 @@ public class MainActivity extends ActionBarActivity
         } catch (Exception e) {
             System.out.println("recreating appdata");
             JSONArray locks = new JSONArray();
-            String usr = new String();
+            String usr = new String("testUser1");
             appData = new JSONObject();
             try {
                 appData.put("locations", locks);
@@ -206,7 +216,7 @@ public class MainActivity extends ActionBarActivity
 
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         if(cm.getActiveNetworkInfo() == null)
-            Toast.makeText(context, "No Internet connection detected, Nom entering offline mode", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "No Internet connection detected, Dormbell entering offline mode", Toast.LENGTH_SHORT).show();
     }
 /*
 	public void onConfigurationChanged() {
@@ -222,6 +232,7 @@ public class MainActivity extends ActionBarActivity
                         PLAY_SERVICES_RESOLUTION_REQUEST).show();
             else {
                 System.out.println("This device is not supported.");
+                Toast.makeText(context, "Sorry, Google Play Services is required for this app", Toast.LENGTH_SHORT).show();
                 finish();
             }
             return false;
@@ -324,34 +335,34 @@ public class MainActivity extends ActionBarActivity
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
         switch (position+1) {
-            case 1:
+            case PROFILE:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, ProfileFragment.newInstance(position + 1))
+                        .replace(R.id.container, ProfileFragment.newInstance(PROFILE))
                         .commit();
                 break;
-            case 2:
+            case RING_RING:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, RingRingFragment.newInstance(position + 1))
+                        .replace(R.id.container, RingRingFragment.newInstance(RING_RING))
                         .commit();
                 break;
-            case 3:
+            case DOORBELL:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container,DoorbellsFragment.newInstance(position + 1))
+                        .replace(R.id.container,DoorbellsFragment.newInstance(DOORBELL))
                         .commit();
                 break;
-            case 4:
+            case LEADERBOARD:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, LeaderboardFragment.newInstance(position + 1))
+                        .replace(R.id.container, LeaderboardFragment.newInstance(LEADERBOARD))
                         .commit();
                 break;
-            case 5:
+            case SETTINGS:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, SettingsFragment.newInstance(position + 1))
+                        .replace(R.id.container, SettingsFragment.newInstance(SETTINGS))
                         .commit();
                 break;
-            case 6:
+            case FEEDBACK:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, FeedbackFragment.newInstance(position + 1))
+                        .replace(R.id.container, FeedbackFragment.newInstance(FEEDBACK))
                         .commit();
                 break;
         }
@@ -417,7 +428,7 @@ public class MainActivity extends ActionBarActivity
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
+    public void onFragmentInteraction(int id) {
 
     }
 
