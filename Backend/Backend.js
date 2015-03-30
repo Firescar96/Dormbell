@@ -79,13 +79,22 @@ if (Meteor.isServer) {
 	var HandleData = function(query)
 	{
 		//Users.remove({}); Should this line even exist?
-		if(query.location != undefined)
+		if(query.update == true)
 		{
-			Users.update({username: query.username}, {$set: {location: query.location}});	
-			console.log("Updated user: " + query.username + " location");
-			//console.log(Users.find({}).fetch());
+			if(query.lock != undefined)
+			{
+				Users.update({username: query.username}, {$set: {lock: query.lock}});	
+				console.log("Updated user: " + query.username + " locks");
+			}
+
+			if(query.location != undefined)
+			{
+				Users.update({username: query.username}, {$set: {location: query.location}});	
+				console.log("Updated user: " + query.username + " location");
+				//console.log(Users.find({}).fetch());
+			}
 			return;
-		}	
+		}
 
 		if(query.username != undefined && query.regId != undefined) {
 			nameUser = Users.findOne({username:query.username});
@@ -101,7 +110,13 @@ if (Meteor.isServer) {
 			return;
 		}
 
-		var toUsr = Users.find({lock:query.lock}).fetch();
+		var allUsr = Users.find({}).fetch();
+		toUsr = []
+		for(var i in toUsr)
+		{
+			if(allUsr[i].indexOf(query.lock) != -1)
+				toUsr.push(allUsr[i]);
+		}
 		
 		/*if(Events.findOne({hash:query.event.hash}) == undefined) //TODO: save events to be sent when a user reconnets
 		{

@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Looper;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -77,18 +78,22 @@ public class MainActivity extends ActionBarActivity
     String regid;
 
     //identifiers for the fragments
-    private static final int PROFILE=1;
-    private static final int RING_RING=2;
-    private static final int DOORBELL=3;
-    private static final int LEADERBOARD=4;
-    private static final int SETTINGS=5;
-    private static final int FEEDBACK=6;
+    private static final int PROFILE=0;
+    private static final int RING_RING=1;
+    private static final int DOORBELLS=2;
+    private static final int LEADERBOARD=3;
+    private static final int SETTINGS=4;
+    private static final int FEEDBACK=5;
+    private static final int NUM_FRAGMENTS=6;
+    private Fragment[] fragments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         context = this;
+
+        initAppData(getFilesDir().getAbsolutePath());
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -98,7 +103,6 @@ public class MainActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
-        initAppData(getFilesDir().getAbsolutePath());
 
         //Check device for Play Services APK. If check succeeds, proceed with
         //GCM registration.
@@ -121,7 +125,7 @@ public class MainActivity extends ActionBarActivity
                     System.out.println("event sent "+data.substring(1));
                     try {
                         JSONObject jsonObject = new JSONObject();
-                        jsonObject.accumulate("to", MainActivity.appData.getString("host"));
+                        jsonObject.accumulate("to", MainActivity.appData.getString("username"));
                         jsonObject.accumulate("hash", data.substring(1));
                         sendJSONToBackend(jsonObject);
                     } catch(JSONException e) {
@@ -332,40 +336,54 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
+        if(fragments == null)
+            initFragments();
+
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
-        switch (position+1) {
+        switch (position) {
             case PROFILE:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, ProfileFragment.newInstance(PROFILE))
+                        .replace(R.id.container, fragments[PROFILE])
                         .commit();
                 break;
             case RING_RING:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, RingRingFragment.newInstance(RING_RING))
+                        .replace(R.id.container, fragments[RING_RING])
                         .commit();
                 break;
-            case DOORBELL:
+            case DOORBELLS:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container,DoorbellsFragment.newInstance(DOORBELL))
+                        .replace(R.id.container,fragments[DOORBELLS])
                         .commit();
                 break;
             case LEADERBOARD:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, LeaderboardFragment.newInstance(LEADERBOARD))
+                        .replace(R.id.container, fragments[LEADERBOARD])
                         .commit();
                 break;
             case SETTINGS:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, SettingsFragment.newInstance(SETTINGS))
+                        .replace(R.id.container, fragments[SETTINGS])
                         .commit();
                 break;
             case FEEDBACK:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, FeedbackFragment.newInstance(FEEDBACK))
+                        .replace(R.id.container, fragments[LEADERBOARD])
                         .commit();
                 break;
         }
+    }
+
+    public void initFragments()
+    {
+        fragments = new Fragment[NUM_FRAGMENTS];
+        fragments[PROFILE] = ProfileFragment.newInstance(PROFILE);
+        fragments[RING_RING] = RingRingFragment.newInstance(RING_RING);
+        fragments[DOORBELLS] = DoorbellsFragment.newInstance(DOORBELLS);
+        fragments[LEADERBOARD] = LeaderboardFragment.newInstance(LEADERBOARD);
+        fragments[SETTINGS] = SettingsFragment.newInstance(SETTINGS);
+        fragments[FEEDBACK] = FeedbackFragment.newInstance(FEEDBACK);
     }
 
     public void onSectionAttached(int number) {
@@ -430,6 +448,11 @@ public class MainActivity extends ActionBarActivity
     @Override
     public void onFragmentInteraction(int id) {
 
+    }
+
+    public void onRing(View v)
+    {
+        ((RingRingFragment) fragments[RING_RING]).onRing(v);
     }
 
     @Override
