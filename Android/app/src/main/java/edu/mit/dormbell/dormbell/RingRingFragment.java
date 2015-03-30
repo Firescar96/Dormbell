@@ -69,10 +69,12 @@ public class RingRingFragment extends Fragment {
         return frame;
     }
 
-    public void onBell(View v) {
+    public void onRing(View v) {
         JSONObject data = new JSONObject();
         try {
             data.append("username", context.appData.getString("username"));
+            data.append("lock","popanddrop");
+            context.sendJSONToBackend(data);
         }
         catch (Exception e) {
 
@@ -88,8 +90,8 @@ public class RingRingFragment extends Fragment {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
         }
-        //((MainActivity) activity).onSectionAttached(
-                //getArguments().getInt(ARG_SECTION_NUMBER));
+        ((MainActivity) activity).onSectionAttached(
+                getArguments().getInt(ARG_SECTION_NUMBER));
     }
 
     @Override
