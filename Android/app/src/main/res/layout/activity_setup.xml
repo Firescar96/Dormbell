@@ -1,0 +1,103 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="edu.mit.dormbell.setup.SetupActivity">
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName|text"
+        android:ems="10"
+        android:id="@+id/fullname"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:autoText="false"
+        android:hint="@string/setup_fullname">
+            <requestFocus/>
+        </EditText>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/setup_continue"
+        android:id="@+id/continue_button"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/fullname"
+        android:layout_alignEnd="@+id/fullname"
+        android:layout_marginRight="59dp"
+        android:layout_marginEnd="59dp"
+        android:layout_marginBottom="77dp"
+        android:onClick="onContinue"
+    />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/usernameFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        android:layout_below="@+id/fullname">
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <edu.mit.dormbell.MonoText
+            android:id="@+id/username"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".6"
+            android:ems="10"
+            android:hint="@string/setup_username"
+            android:inputType="text">
+        </edu.mit.dormbell.MonoText>
+
+        <ProgressBar
+            android:id="@+id/nameProgress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight=".1"
+            android:visibility="gone" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <RelativeLayout
+            android:id="@+id/nameBad"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".1"
+            android:background="#a00"
+            android:visibility="gone" >
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/nameGood"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".1"
+            android:background="#0a0"
+            android:visibility="gone" >
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/nameButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".25"
+            android:onClick="checkname"
+            android:text="Check"
+            android:textColor="#eee" />
+
+    </LinearLayout>
+</RelativeLayout>

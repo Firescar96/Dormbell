@@ -12,7 +12,7 @@
  * the License.
  */
 
-package edu.mit.dormbell.dormbell;
+package edu.mit.dormbell;
 
 import android.annotation.TargetApi;
 import android.app.IntentService;
@@ -383,6 +383,11 @@ public class GCMIntentService extends IntentService {
         }.execute(null, null, null);
         System.out.println(msg);
         return msg;
+    }
+
+    public void GCMIntentService()
+    {
+        //required constructor for the service
     }
     
     private static String convertInputStreamToString(InputStream inputStream) throws IOException{

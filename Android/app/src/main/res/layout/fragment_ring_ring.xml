@@ -14,7 +14,7 @@
         android:id="@+id/locationSpinner"
         android:layout_gravity="top|center_horizontal"
         android:spinnerMode="dropdown"
-        android:prompt="@string/location_spiner_prompt"
+        android:prompt="@string/location_spinner_prompt"
         android:focusable="false"
         android:background="@color/primary_material_light"
         android:layout_alignParentTop="true"

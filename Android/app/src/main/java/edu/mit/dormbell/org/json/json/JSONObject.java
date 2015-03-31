@@ -24,6 +24,8 @@ package edu.mit.dormbell.org.json.json;
  SOFTWARE.
  */
 
+import org.json.JSONException;
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -39,8 +41,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.Set;
-
-import org.json.JSONException;
 
 /**
  * A JSONObject is an unordered collection of name/value pairs. Its external

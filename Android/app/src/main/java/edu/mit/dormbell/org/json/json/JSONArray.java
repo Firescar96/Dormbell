@@ -24,6 +24,8 @@ package edu.mit.dormbell.org.json.json;
  SOFTWARE.
  */
 
+import org.json.JSONException;
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -32,8 +34,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
-
-import org.json.JSONException;
 
 /**
  * A JSONArray is an ordered sequence of values. Its external text form is a

@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import edu.mit.dormbell.MainActivity;
+import edu.mit.dormbell.R;
 import edu.mit.dormbell.org.json.json.JSONObject;
 
 

@@ -1,7 +1,8 @@
-package edu.mit.dormbell.dormbell;
+package edu.mit.dormbell;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
@@ -46,8 +47,16 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import edu.mit.dormbell.dormbell.DoorbellsFragment;
+import edu.mit.dormbell.dormbell.FeedbackFragment;
+import edu.mit.dormbell.dormbell.LeaderboardFragment;
+import edu.mit.dormbell.dormbell.NavigationDrawerFragment;
+import edu.mit.dormbell.dormbell.ProfileFragment;
+import edu.mit.dormbell.dormbell.RingRingFragment;
+import edu.mit.dormbell.dormbell.SettingsFragment;
 import edu.mit.dormbell.org.json.json.JSONArray;
 import edu.mit.dormbell.org.json.json.JSONObject;
+import edu.mit.dormbell.setup.SetupActivity;
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks,
@@ -73,8 +82,8 @@ public class MainActivity extends ActionBarActivity
 
     GoogleCloudMessaging gcm;
     AtomicInteger msgId = new AtomicInteger();
-    SharedPreferences prefs;
-    LocationServices locServices;
+    private SharedPreferences prefs;
+    LocationAPI locServices;
     String regid;
 
     //identifiers for the fragments
@@ -92,6 +101,8 @@ public class MainActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         context = this;
+
+        prefs = getPreferences(MODE_PRIVATE);
 
         initAppData(getFilesDir().getAbsolutePath());
 
@@ -148,7 +159,7 @@ public class MainActivity extends ActionBarActivity
                     }
                 } catch (JSONException e) {e.printStackTrace();}
 
-        locServices = new LocationServices();
+        locServices = new LocationAPI();
     }
 
     /**
@@ -221,6 +232,13 @@ public class MainActivity extends ActionBarActivity
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         if(cm.getActiveNetworkInfo() == null)
             Toast.makeText(context, "No Internet connection detected, Dormbell entering offline mode", Toast.LENGTH_SHORT).show();
+
+        if (prefs.getBoolean("firstrun", true)) {
+            Intent myIntent = new Intent(this, SetupActivity.class);
+            startActivity(myIntent);
+
+            //prefs.edit().putBoolean("firstrun", false).commit(); //TODO: finish first time prefs
+        }
     }
 /*
 	public void onConfigurationChanged() {

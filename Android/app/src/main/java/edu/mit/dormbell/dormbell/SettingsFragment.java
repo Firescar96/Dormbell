@@ -12,6 +12,9 @@ import android.widget.TimePicker;
 
 import java.util.Calendar;
 
+import edu.mit.dormbell.MainActivity;
+import edu.mit.dormbell.R;
+
 
 /**
  * A simple {@link Fragment} subclass.

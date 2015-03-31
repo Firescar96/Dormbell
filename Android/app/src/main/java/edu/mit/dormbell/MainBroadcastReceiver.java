@@ -1,4 +1,4 @@
-package edu.mit.dormbell.dormbell;
+package edu.mit.dormbell;
 
 import android.content.ComponentName;
 import android.content.Context;

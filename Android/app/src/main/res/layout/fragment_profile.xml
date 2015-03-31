@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Nchinda Nchinda"
-        android:id="@+id/username"
+        android:id="@+id/fullname"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/imageView"
         android:layout_marginTop="36dp"
