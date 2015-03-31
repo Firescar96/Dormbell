@@ -12,7 +12,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
-import edu.mit.dormbell.dormbell.dummy.DummyContent;
+import edu.mit.dormbell.MainActivity;
+import edu.mit.dormbell.R;
 
 /**
  * A fragment representing a list of Items.
@@ -67,8 +68,8 @@ public class DoorbellsFragment extends ListFragment implements AbsListView.OnIte
         }
 
         // TODO: Change Adapter to display your content
-        mAdapter = new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.ITEMS);
+        mAdapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_list_item_1, android.R.id.text1, new String[]{});
     }
 
     @Override

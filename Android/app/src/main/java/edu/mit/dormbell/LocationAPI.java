@@ -1,56 +1,51 @@
-package edu.mit.dormbell.dormbell;
+package edu.mit.dormbell;
 
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient;
-import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 
 import edu.mit.dormbell.org.json.json.JSONObject;
 
 
-public class LocationServices implements
-GooglePlayServicesClient.ConnectionCallbacks,
-GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
+public class LocationAPI implements
+GoogleApiClient.ConnectionCallbacks,
+            GoogleApiClient.OnConnectionFailedListener,
+            LocationListener {
 
-	MainActivity context = MainActivity.context;
-	LocationClient locClient;
-	LocationRequest locRequest;
-	
-	public LocationServices() 
+	private MainActivity context = MainActivity.context;
+    private final String TAG = "LocationServices";
+	private LocationRequest locRequest;
+    private GoogleApiClient mGoogleApiClient;
+
+	public LocationAPI()
 	{
-		locClient = new LocationClient(context, this, this);
-		
+
+        mGoogleApiClient = new GoogleApiClient.Builder(context)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();
+
 		locRequest = LocationRequest.create();
-        // Use high accuracy
-        locRequest.setPriority(
-        		LocationRequest.PRIORITY_HIGH_ACCURACY);
-        // Set the update interval to 5 seconds
-        locRequest.setInterval(5000);
-        // Set the fastest update interval to 5 second
-        locRequest.setFastestInterval(5000);
+        locRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY); // Use high accuracy
+        locRequest.setInterval(5000); // Set the update interval to 5 seconds
+        locRequest.setFastestInterval(5000); // Set the fastest update interval to 5 second
 	}
-	
-	public void connect()
-	{
-		locClient.connect();
-		
-	}
-	
-	public void disconnect()
-	{
-		locClient.disconnect();
-	}
-	
+
+	public void connect() {mGoogleApiClient.connect();}
+
+	public void disconnect() {mGoogleApiClient.disconnect();}
+
 	public Location getLastLocation()
-	{
-		return locClient.getLastLocation();
-	}
-	
+    {return LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);}
+
 	/*
      * Called by Location Services when the request to connect the
      * client finishes successfully. At this point, you can
@@ -58,21 +53,11 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
      */
     @Override
     public void onConnected(Bundle dataBundle) {
-        // Display the connection status
-        //Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show();
-    	locClient.requestLocationUpdates(locRequest, this);
-    	sendLocationToBackend();
-    }
 
-    /*
-     * Called by Location Services if the connection to the
-     * location client drops because of an error.
-     */
-    @Override
-    public void onDisconnected() {
-        // Display the connection status
-        //Toast.makeText(this, "Lost location, using lastKnown coordinates",
-                //Toast.LENGTH_SHORT).show();
+        LocationServices.FusedLocationApi.requestLocationUpdates(
+                mGoogleApiClient, locRequest, this);
+
+    	sendLocationToBackend();
     }
 
     /*
@@ -128,5 +113,10 @@ GooglePlayServicesClient.OnConnectionFailedListener, LocationListener{
 				return param;
             }
         }.execute(null, null, null);
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.i(TAG, "GoogleApiClient connection has been suspend");
     }
 }

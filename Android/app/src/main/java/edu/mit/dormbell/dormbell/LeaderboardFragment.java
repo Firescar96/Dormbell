@@ -7,9 +7,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-
-import edu.mit.dormbell.dormbell.dummy.DummyContent;
-
 /**
  * A fragment representing a list of Items.
  * <p/>
@@ -50,8 +47,8 @@ public class LeaderboardFragment extends ListFragment {
         }
 
         // TODO: Change Adapter to display your content
-        setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.ITEMS));
+        setListAdapter(new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_list_item_1, android.R.id.text1, new String[] {}));
     }
 
 

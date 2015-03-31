@@ -2,11 +2,18 @@
 <items version="2" >
 
     <item
-        jar="/home/firescar96/Documents/InnerTicks/Android/Dormbell/Android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services/3.1.59/classes.jar"
+        jar="/home/firescar96/.gradle/caches/modules-2/files-2.1/com.mobsandgeeks/android-saripaar/2.0-SNAPSHOT/b0d86a6b7b9afcfb4b79f9fac99e896f92dc8b83/android-saripaar-2.0-SNAPSHOT.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="2dd7b1a9ea65bb03d9cd16df777eeaf537a1fc81">
-        <dex dex="/home/firescar96/Documents/InnerTicks/Android/Dormbell/Android/app/build/intermediates/pre-dexed/debug/classes-13f4254549b82c80ad148b089fd5cc656e07dc3d.jar" />
+        sha1="b0d86a6b7b9afcfb4b79f9fac99e896f92dc8b83">
+        <dex dex="/home/firescar96/Documents/InnerTicks/Android/Dormbell/Android/app/build/intermediates/pre-dexed/debug/android-saripaar-2.0-SNAPSHOT-2d1351e7e8f5773f971b07418d7cda9f8eab5178.jar" />
+    </item>
+    <item
+        jar="/home/firescar96/Documents/InnerTicks/Android/Dormbell/Android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
+        <dex dex="/home/firescar96/Documents/InnerTicks/Android/Dormbell/Android/app/build/intermediates/pre-dexed/debug/classes-29600daa41d9f086dcc25dcd31683002752be728.jar" />
     </item>
     <item
         jar="/home/firescar96/Documents/ADT Bundle/sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.3/support-annotations-21.0.3.jar"
@@ -30,11 +37,11 @@
         <dex dex="/home/firescar96/Documents/InnerTicks/Android/Dormbell/Android/app/build/intermediates/pre-dexed/debug/classes-4da919997804c971280b13819d0e5bd5cf58c22e.jar" />
     </item>
     <item
-        jar="/home/firescar96/Documents/InnerTicks/Android/Dormbell/Android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/classes.jar"
+        jar="/home/firescar96/Documents/InnerTicks/Android/Dormbell/Android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.5.87/classes.jar"
         jumboMode="false"
         revision="21.1.2"
-        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
-        <dex dex="/home/firescar96/Documents/InnerTicks/Android/Dormbell/Android/app/build/intermediates/pre-dexed/debug/classes-29600daa41d9f086dcc25dcd31683002752be728.jar" />
+        sha1="dd9247ea0fabe8ee479638c4b4a23e93752be256">
+        <dex dex="/home/firescar96/Documents/InnerTicks/Android/Dormbell/Android/app/build/intermediates/pre-dexed/debug/classes-1f2bb0ea8ee9934aec285fd861232d3fc3a4dc57.jar" />
     </item>
 
 </items>
