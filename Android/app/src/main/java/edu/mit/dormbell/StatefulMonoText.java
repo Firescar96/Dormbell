@@ -6,23 +6,30 @@ import android.text.Editable;
 import android.util.AttributeSet;
 import android.widget.EditText;
 
-public class MonoText extends EditText implements TextWatcher {
+public class StatefulMonoText extends EditText implements TextWatcher {
 
-	Context context;
-	
-	public MonoText(Context context) {
+	private Context context;
+
+    public static final int TEXT_BAD=0;
+    public static final int TEXT_GOOD=1;
+    public static final int TEXT_PROGRESS=2;
+    public static final int TEXT_UNSET=3;
+
+    private int textState=TEXT_UNSET;
+
+	public StatefulMonoText(Context context) {
 		super(context);
 		this.context = context;
 		addTextChangedListener(this);
 	}
 
-	public MonoText(Context context, AttributeSet attrs) {
+	public StatefulMonoText(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		this.context = context;
 		addTextChangedListener(this);
 	}
 
-	public MonoText(Context context, AttributeSet attrs, int defStyle) {
+	public StatefulMonoText(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		this.context = context;
 		addTextChangedListener(this);
@@ -32,7 +39,8 @@ public class MonoText extends EditText implements TextWatcher {
 	public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
 	@Override
-	public void onTextChanged(CharSequence s, int start, int before, int count) {}
+	public void onTextChanged(CharSequence s, int start, int before, int count) {
+        textState = TEXT_UNSET;}
 
 	@Override
 	public void afterTextChanged(Editable ed) {
@@ -42,8 +50,14 @@ public class MonoText extends EditText implements TextWatcher {
 	    {
 	         setText(result);
 	         setSelection(result.length());
-	         // alert the user
 	    }
 	}
 
+    public int getTextState() {
+        return textState;
+    }
+
+    public void setTextState(int state) {
+        textState = state;
+    }
 }

@@ -191,11 +191,13 @@ public class MainActivity extends ActionBarActivity
         } catch (Exception e) {
             System.out.println("recreating appdata");
             JSONArray locks = new JSONArray();
-            String usr = new String("testUser1");
+            String fulusr = new String();
+            String usrnm = new String();
             appData = new JSONObject();
             try {
                 appData.put("locations", locks);
-                appData.put("username", usr);
+                appData.put("fullname", fulusr);
+                appData.put("username", usrnm);
             } catch (Exception e1) {}
         }
     }
@@ -236,8 +238,6 @@ public class MainActivity extends ActionBarActivity
         if (prefs.getBoolean("firstrun", true)) {
             Intent myIntent = new Intent(this, SetupActivity.class);
             startActivity(myIntent);
-
-            //prefs.edit().putBoolean("firstrun", false).commit(); //TODO: finish first time prefs
         }
     }
 /*

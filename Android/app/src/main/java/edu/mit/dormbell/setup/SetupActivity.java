@@ -21,6 +21,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.json.JSONException;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -31,6 +32,7 @@ import java.util.Locale;
 import edu.mit.dormbell.GCMIntentService;
 import edu.mit.dormbell.MainActivity;
 import edu.mit.dormbell.R;
+import edu.mit.dormbell.StatefulMonoText;
 
 public class SetupActivity extends Activity implements Validator.ValidationListener {
 
@@ -40,13 +42,14 @@ public class SetupActivity extends Activity implements Validator.ValidationListe
 
     @Order(value = 2)
     @NotEmpty(message = "you need an identifier")
-    private EditText username;
+    private StatefulMonoText username;
 
     private static SetupActivity activity;
     private static MainActivity context = MainActivity.context;
     private static String TAG = "SetupActivity";
 
     private Validator validator;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +60,7 @@ public class SetupActivity extends Activity implements Validator.ValidationListe
         validator.setValidationListener(this);
 
         fullname = (EditText) findViewById(R.id.fullname);
-        username = (EditText) findViewById(R.id.username);
+        username = (StatefulMonoText) findViewById(R.id.username);
     }
 
     public void checkname(View v) {
@@ -68,7 +71,31 @@ public class SetupActivity extends Activity implements Validator.ValidationListe
     public void onValidationSucceeded() {
 
         Toast.makeText(this, "Yay! we got it right!", Toast.LENGTH_SHORT).show();
-        checkname(null);
+        if(username.getTextState() != StatefulMonoText.TEXT_GOOD) {
+            username.setTextState(StatefulMonoText.TEXT_UNSET);
+
+            findViewById(R.id.nameProgress).setVisibility(View.VISIBLE);
+            findViewById(R.id.nameGood).setVisibility(View.GONE);
+            findViewById(R.id.nameBad).setVisibility(View.GONE);
+            checkname(null);
+            while(username.getTextState() == StatefulMonoText.TEXT_UNSET)
+            {try {
+                Thread.sleep(500);                 //TODO: Change this code to use a listener of the username variable
+            } catch(InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }}
+            if(username.getTextState() != StatefulMonoText.TEXT_GOOD)
+                return;
+        }
+        try {
+            context.appData.put("fullname",fullname.getText().toString());
+            context.appData.put("username",username.getText().toString());
+
+            context.getPreferences(MODE_PRIVATE).edit().putBoolean("firstrun", false).commit();
+            finish();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -92,7 +119,7 @@ public class SetupActivity extends Activity implements Validator.ValidationListe
         validator.validate();
     }
 
-    protected static boolean precise; //whether we are matching the entered name and regId
+    protected static boolean precise = false; //whether we are matching the entered name and regId
 
     public class ChecknameTask extends AsyncTask<String, Object, Boolean> {
 
@@ -122,9 +149,9 @@ public class SetupActivity extends Activity implements Validator.ValidationListe
 
                 HttpGet httpGet;
                 if(precise)
-                    httpGet = new HttpGet("http://18.181.2.180:3667?checkName="+name[0].toUpperCase(Locale.US)+"&regId="+ GCMIntentService.getRegistrationId(context));
+                    httpGet = new HttpGet("http://18.181.2.180:3667?checkName="+name[0].toLowerCase(Locale.US)+"&regId="+ GCMIntentService.getRegistrationId(context));
                 else
-                    httpGet = new HttpGet("http://18.181.2.180:3667?checkName="+name[0].toUpperCase(Locale.US));
+                    httpGet = new HttpGet("http://18.181.2.180:3667?checkName="+name[0].toLowerCase(Locale.US));
 
                 // 7. Set some headers to inform server about the type of the content
                 httpGet.setHeader("Accept", "application/json");
@@ -146,14 +173,12 @@ public class SetupActivity extends Activity implements Validator.ValidationListe
                 Bundle data = new Bundle();
                 data.putString("command", "checkName");
 
-                data.putBoolean("progress", false);
                 if(inputStream != null)
                     if(convertStreamToString(inputStream).contains("true"))
-                        data.putBoolean("value", true);
+                        username.setTextState(StatefulMonoText.TEXT_BAD);
                     else
-                        data.putBoolean("value", false);
-                else
-                    data.putBoolean("progress", true);
+                        username.setTextState(StatefulMonoText.TEXT_GOOD);
+
                 msg.setData(data);
                 contextHandler.sendMessage(msg);
 
@@ -174,22 +199,22 @@ public class SetupActivity extends Activity implements Validator.ValidationListe
                 View visible;
                 View gone1;
                 View gone2;
-                if(msg.getData().getBoolean("progress")) {
-                    visible = activity.findViewById(R.id.nameProgress);
-                    gone1 = activity.findViewById(R.id.nameGood);
-                    gone2 = activity.findViewById(R.id.nameBad);
-                }
-                else if(msg.getData().getBoolean("value"))
-                {
-                    visible = activity.findViewById(R.id.nameBad);
-                    gone1 = activity.findViewById(R.id.nameGood);
-                    gone2 = activity.findViewById(R.id.nameProgress);
-                }
-                else
-                {
-                    visible = activity.findViewById(R.id.nameGood);
-                    gone1 = activity.findViewById(R.id.nameBad);
-                    gone2 = activity.findViewById(R.id.nameProgress);
+
+                switch (activity.username.getTextState()) {
+                    case StatefulMonoText.TEXT_GOOD:
+                        visible = activity.findViewById(R.id.nameGood);
+                        gone1 = activity.findViewById(R.id.nameBad);
+                        gone2 = activity.findViewById(R.id.nameProgress);
+                        break;
+                    case StatefulMonoText.TEXT_BAD:
+                        visible = activity.findViewById(R.id.nameBad);
+                        gone1 = activity.findViewById(R.id.nameGood);
+                        gone2 = activity.findViewById(R.id.nameProgress);
+                        break;
+                    default:
+                        visible = activity.findViewById(R.id.nameProgress);
+                        gone1 = activity.findViewById(R.id.nameGood);
+                        gone2 = activity.findViewById(R.id.nameBad);
                 }
                 gone1.setVisibility(View.GONE);
                 gone2.setVisibility(View.GONE);
