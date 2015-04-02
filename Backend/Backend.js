@@ -81,9 +81,9 @@ if (Meteor.isServer) {
 		//Users.remove({}); Should this line even exist?
 		if(query.update == true)
 		{	
-			if(query.lock != undefined)
+			if(query.locks != undefined)
 			{
-				Users.update({username: query.username}, {$set: {lock: query.lock}});	
+				Users.update({username: query.username}, {$set: {locks: query.locks}});	
 				console.log("Updated user: " + query.username + " locks");
 			}
 
@@ -112,12 +112,13 @@ if (Meteor.isServer) {
 
 		var allUsr = Users.find({}).fetch();
 		toUsr = []
-		for(var i in toUsr)
+		for(var i in allUsr)
 		{
-			if(allUsr[i].indexOf(query.lock) != -1)
+			if(allUsr[i].locks.indexOf(query.lock) != -1)
 				toUsr.push(allUsr[i]);
 		}
 		
+
 		/*if(Events.findOne({hash:query.event.hash}) == undefined) //TODO: save events to be sent when a user reconnets
 		{
 			Events.insert({
@@ -128,8 +129,7 @@ if (Meteor.isServer) {
 	    		host:query.event.host
 		    });
 		}*/
-
-		console.log(toUsr)	
+	
 		var registrationIds = [];
 		for(var i in toUsr)
 		{
@@ -140,7 +140,7 @@ if (Meteor.isServer) {
 			var hostUsr = Users.findOne({username:query.username});
 			//console.log(toUsr[i].location);
 			//console.log(Users.findOne({username:query.event.host}));
-			if(toUsr[i].location.latitude != undefined)
+			if(toUsr[i].location != undefined)
 			{
 				var latPow = Math.pow(parseInt(hostUsr.location.latitude)-parseInt(toUsr[i].location.latitude),2);
 				var longPow = Math.pow(parseInt(hostUsr.location.longitude)-parseInt(toUsr[i].location.longitude),2);
@@ -151,17 +151,18 @@ if (Meteor.isServer) {
 			
 			registrationIds.push(toUsr[i].regId);
 		}
-
-		var message = new  gcm.Message();
-		if(query.ring == true)
-		{
-			message.sender = "\""+query.sender+"\"",
-			message.lock="\""+query.lock+"\""
-		}
 		
-		sender.send(message, registrationIds, 10, function (err, result) {
-	  		if(err) console.error(err);
-	  		else    console.log(result);
-		});
+		if(query.ring)
+		{
+			console.log('ring');
+			var message = new  gcm.Message();
+			message.addData('type', 'ring');
+			message.addData('sender',query.sender);
+			message.addData('lock',query.lock);
+			console.log(message);	
+			sender.send(message, registrationIds, function (err, result) {
+	  			if(err) console.error(err);
+			});
+		}
 	}
 }
