@@ -26,7 +26,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -45,7 +44,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import edu.mit.dormbell.dormbell.DoorbellsFragment;
 import edu.mit.dormbell.dormbell.FeedbackFragment;
@@ -80,8 +78,6 @@ public class MainActivity extends ActionBarActivity
     public static MainActivity context;
     public static JSONObject appData;
 
-    GoogleCloudMessaging gcm;
-    AtomicInteger msgId = new AtomicInteger();
     private SharedPreferences prefs;
     LocationAPI locServices;
     String regid;
@@ -115,17 +111,14 @@ public class MainActivity extends ActionBarActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
+
         //Check device for Play Services APK. If check succeeds, proceed with
         //GCM registration.
-        if (checkPlayServices()) {
-            gcm = GoogleCloudMessaging.getInstance(this);
-            regid = GCMIntentService.getRegistrationId(this);
-            if (regid.isEmpty())
-                GCMIntentService.registerInBackground();
-        } else
+        if (!checkPlayServices()) {
             System.out.println("No valid Google Play Services APK found.");
-
-
+            Toast.makeText(context, "Please install an updated Google Play Services APK", Toast.LENGTH_LONG).show();
+            finish();
+        }
 
         if(getIntent().getDataString() != null)
             if(getIntent().getDataString().contains("18.181.2.180:666"))

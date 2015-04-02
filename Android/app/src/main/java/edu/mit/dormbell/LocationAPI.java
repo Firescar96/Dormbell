@@ -103,7 +103,7 @@ GoogleApiClient.ConnectionCallbacks,
                     lokiSon.accumulate("latitude", loki.getLatitude());
                     lokiSon.accumulate("longitude", loki.getLongitude());
                     jsonObject.put("location", lokiSon);
-                    jsonObject.accumulate("host", MainActivity.appData.getString("host"));
+                    jsonObject.accumulate("username", MainActivity.appData.getString("username"));
          
                     MainActivity.sendJSONToBackend(jsonObject);
          

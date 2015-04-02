@@ -7,8 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.json.JSONException;
+
 import edu.mit.dormbell.MainActivity;
 import edu.mit.dormbell.R;
+import edu.mit.dormbell.org.json.json.JSONArray;
 import edu.mit.dormbell.org.json.json.JSONObject;
 
 
@@ -61,21 +64,27 @@ public class RingRingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         frame = inflater.inflate(R.layout.fragment_ring_ring, container, false);
-
-            /*try {
-                if(MainActivity.appData.getString("host") == "")
-                    requestHostname(); TODO: First Time setup exit to profile
-            } catch (JSONException e) {
-                //requestHostname();
-            }*/
         return frame;
     }
 
     public void onRing(View v) {
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            JSONArray locks = new JSONArray();
+            locks.put("everybodyusingtheappfortesting");
+            jsonObject.put("lock", locks);
+            jsonObject.put("update", true);
+            jsonObject.put("username", context.appData.getString("username"));
+            context.sendJSONToBackend(jsonObject);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         JSONObject data = new JSONObject();
         try {
             data.append("username", context.appData.getString("username"));
-            data.append("lock","popanddrop");
+            data.append("lock","everybodyusingtheappfortesting");
             context.sendJSONToBackend(data);
         }
         catch (Exception e) {

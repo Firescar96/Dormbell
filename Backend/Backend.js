@@ -80,7 +80,7 @@ if (Meteor.isServer) {
 	{
 		//Users.remove({}); Should this line even exist?
 		if(query.update == true)
-		{
+		{	
 			if(query.lock != undefined)
 			{
 				Users.update({username: query.username}, {$set: {lock: query.lock}});	
