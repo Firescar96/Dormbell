@@ -35,19 +35,9 @@ import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
 import org.json.JSONException;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Calendar;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -142,7 +132,7 @@ public class GCMIntentService extends IntentService {
 						Message msg = new Message();
 						Bundle data = new Bundle();
 						data.putString("type", "event."+eveData.getString("privacy"));
-						data.putString("host", eveData.getString("host"));
+						data.putString("username", eveData.getString("username"));
 						data.putString("date", eveData.getString("date"));
 					    msg.setData(data);
 					    contextHandler.sendMessage(msg);
@@ -174,7 +164,7 @@ public class GCMIntentService extends IntentService {
     				if(msg.getData().getString("type").contains("closed"))
     					annoy = true;
     				
-                	Notify("Food at "+nHour+":"+ String.format("%02d",nMin) + day,"Eat with "+msg.getData().getString("host"), new Bundle(), 0,annoy); 
+                	Notify("Food at "+nHour+":"+ String.format("%02d",nMin) + day,"Eat with "+msg.getData().getString("username"), new Bundle(), 0,annoy);
                 	
                 	if(context != null) {
                 		try {
@@ -291,7 +281,7 @@ public class GCMIntentService extends IntentService {
                     // The request to your server should be authenticated if your app
                     // is using accounts.
         			System.out.println("regID: "+regId);
-                    if(MainActivity.appData.getString("host").length() > 0)
+                    if(MainActivity.appData.getString("username").length() > 0)
                     	sendRegistrationIdToBackend();
 
                     // For this demo: we don't need to send it because the device
@@ -313,94 +303,29 @@ public class GCMIntentService extends IntentService {
 
         }.execute(null, null, null);
     }
-    
+
 
     /**
      * Sends the registration ID to your server over HTTP, so it can use GCM/HTTP
-     * or CCS to send messages to your app. Not needed for this demo since the
-     * device sends upstream messages to a server that echoes back the message
-     * using the 'from' address in the message.
-     * @return 
+     * or CCS to send messages to your app.
      */
-    public static String sendRegistrationIdToBackend() {
-        String msg = "";
-        new AsyncTask<Object,Object,Object>() {
-			@Override
-			protected Object doInBackground(Object ... param) {
-                String msg = "";
-                InputStream inputStream = null;
-                
-                try {
-                    // 1. create HttpClient
-                    HttpClient httpclient = new DefaultHttpClient();
-         
-                    // 2. make POST request to the given URL
-                    HttpPost httpPost = new HttpPost("http://nchinda2.mit.edu:666");
-         
-                    String json = "";
-         
-                    // 3. build jsonObject
-                    JSONObject jsonObject = new JSONObject();
-                    jsonObject.accumulate("regId", regId);
-                    jsonObject.accumulate("host", MainActivity.appData.getString("host"));
-         
-                    // 4. convert JSONObject to JSON to String
-                    json = jsonObject.toString();
-         
-                    // 5. set json to StringEntity
-                    StringEntity se = new StringEntity(json);
-         
-                    // 6. set httpPost Entity
-                    httpPost.setEntity(se);
-         
-                    // 7. Set some headers to inform server about the type of the content   
-                    httpPost.setHeader("Accept", "application/json");
-                    httpPost.setHeader("Content-type", "application/json");
-                    
-                    HttpParams httpParams = httpclient.getParams();
-                    HttpConnectionParams.setConnectionTimeout(httpParams, 5000);
-                    HttpConnectionParams.setSoTimeout(httpParams, 5000);
-                    httpPost.setParams(httpParams);
-                    
-                    // 8. Execute POST request to the given URL
-                    System.out.println("executing"+json);
-                    HttpResponse httpResponse = httpclient.execute(httpPost);
-                    // 9. receive response as inputStream
-                    inputStream = httpResponse.getEntity().getContent();
-         
-                    // 10. convert inputstream to string
-                    if(inputStream != null)
-                        msg = convertInputStreamToString(inputStream);
-                    else
-                        msg = "Did not work!";
-         
-                } catch (Exception e) {
-                    e.printStackTrace();;
-                }
-                System.out.println(msg);
-                return msg;
-            }
-        }.execute(null, null, null);
-        System.out.println(msg);
-        return msg;
+    private static void sendRegistrationIdToBackend() {
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("regId", regId);
+            jsonObject.put("username", MainActivity.appData.getString("username"));
+            context.sendJSONToBackend(jsonObject);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void GCMIntentService()
     {
         //required constructor for the service
     }
-    
-    private static String convertInputStreamToString(InputStream inputStream) throws IOException{
-        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
-        String line = "";
-        String result = "";
-        while((line = bufferedReader.readLine()) != null)
-            result += line;
- 
-        inputStream.close();
-        return result;
- 
-    } 
 
     /**
      * Stores the registration ID and app versionCode in the application's

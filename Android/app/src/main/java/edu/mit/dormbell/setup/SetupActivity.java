@@ -1,6 +1,8 @@
 package edu.mit.dormbell.setup;
 
 import android.app.Activity;
+import android.content.Context;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
@@ -61,6 +64,12 @@ public class SetupActivity extends Activity implements Validator.ValidationListe
 
         fullname = (EditText) findViewById(R.id.fullname);
         username = (StatefulMonoText) findViewById(R.id.username);
+
+        //proceed with GCM registration.
+        GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(context);
+        String regid = GCMIntentService.getRegistrationId(context);
+        if (regid.isEmpty())
+            GCMIntentService.registerInBackground();        //TODO: Somehow ensure that the registration id eventually gets sent
     }
 
     public void checkname(View v) {
@@ -91,7 +100,15 @@ public class SetupActivity extends Activity implements Validator.ValidationListe
             context.appData.put("fullname",fullname.getText().toString());
             context.appData.put("username",username.getText().toString());
 
-            context.getPreferences(MODE_PRIVATE).edit().putBoolean("firstrun", false).commit();
+            ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+            if(cm.getActiveNetworkInfo() == null) {
+                Toast.makeText(context, "Internet connection lost", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            GCMIntentService.registerInBackground();
+
+            context.getPreferences(MODE_PRIVATE).edit().putBoolean("firstrun", false).commit();//TODO: Somehow ensure that the registration id eventually gets sent to the backend before this step
+            context.closeAppData(context.getFilesDir().getAbsolutePath());
             finish();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -190,7 +207,7 @@ public class SetupActivity extends Activity implements Validator.ValidationListe
     }
 
 
-    protected static Handler contextHandler = new Handler() {
+    private static Handler contextHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
