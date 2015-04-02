@@ -83,7 +83,11 @@ if (Meteor.isServer) {
 		{	
 			if(query.locks != undefined)
 			{
+<<<<<<< HEAD
+				Users.update({username: query.username}, {$set: {locks: query.lock}});	
+=======
 				Users.update({username: query.username}, {$set: {locks: query.locks}});	
+>>>>>>> 5887dc4119102a81d8601cd6fab6f448ac1ef4c9
 				console.log("Updated user: " + query.username + " locks");
 			}
 
