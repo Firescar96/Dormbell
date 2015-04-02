@@ -81,9 +81,9 @@ if (Meteor.isServer) {
 		//Users.remove({}); Should this line even exist?
 		if(query.update == true)
 		{	
-			if(query.lock != undefined)
+			if(query.locks != undefined)
 			{
-				Users.update({username: query.username}, {$set: {lock: query.lock}});	
+				Users.update({username: query.username}, {$set: {locks: query.lock}});	
 				console.log("Updated user: " + query.username + " locks");
 			}
 
@@ -114,7 +114,7 @@ if (Meteor.isServer) {
 		toUsr = []
 		for(var i in toUsr)
 		{
-			if(allUsr[i].indexOf(query.lock) != -1)
+			if(allUsr[i].locks.indexOf(query.lock) != -1)
 				toUsr.push(allUsr[i]);
 		}
 		
@@ -140,7 +140,7 @@ if (Meteor.isServer) {
 			var hostUsr = Users.findOne({username:query.username});
 			//console.log(toUsr[i].location);
 			//console.log(Users.findOne({username:query.event.host}));
-			if(toUsr[i].location.latitude != undefined)
+			if(toUsr[i].location != undefined)
 			{
 				var latPow = Math.pow(parseInt(hostUsr.location.latitude)-parseInt(toUsr[i].location.latitude),2);
 				var longPow = Math.pow(parseInt(hostUsr.location.longitude)-parseInt(toUsr[i].location.longitude),2);
