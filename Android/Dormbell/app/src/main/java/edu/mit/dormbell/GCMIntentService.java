@@ -151,7 +151,7 @@ public class GCMIntentService extends IntentService {
         {
         	NotificationCompat.Builder mBuilder =
         	        new NotificationCompat.Builder(this)
-        	        .setSmallIcon(R.drawable.ic_plusone_medium_off_client) //TODO: Make an app icon
+        	        .setSmallIcon(R.drawable.icon)
         	        .setContentTitle(notificationTitle)
         	        .setContentText(notificationMessage)
         	        .setAutoCancel(true);

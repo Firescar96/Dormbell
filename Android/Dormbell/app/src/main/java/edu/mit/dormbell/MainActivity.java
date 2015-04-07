@@ -379,7 +379,7 @@ public class MainActivity extends ActionBarActivity
                 break;
             case FEEDBACK:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, fragments[LEADERBOARD])
+                        .replace(R.id.container, fragments[FEEDBACK])
                         .commit();
                 break;
         }
@@ -398,22 +398,22 @@ public class MainActivity extends ActionBarActivity
 
     public void onSectionAttached(int number) {
         switch (number) {
-            case 1:
+            case PROFILE:
                 mTitle = getString(R.string.title_section1);
                 break;
-            case 2:
+            case RING_RING:
                 mTitle = getString(R.string.title_section2);
                 break;
-            case 3:
+            case DOORBELLS:
                 mTitle = getString(R.string.title_section3);
                 break;
-            case 4:
+            case LEADERBOARD:
                 mTitle = getString(R.string.title_section4);
                 break;
-            case 5:
+            case SETTINGS:
                 mTitle = getString(R.string.title_section5);
                 break;
-            case 6:
+            case FEEDBACK:
                 mTitle = getString(R.string.title_section6);
                 break;
         }
