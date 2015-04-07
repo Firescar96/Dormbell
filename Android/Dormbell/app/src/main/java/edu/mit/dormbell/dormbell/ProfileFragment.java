@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ public class ProfileFragment extends Fragment {
 
     static MainActivity context = MainActivity.context;
 
+    private static final String TAG = "ProfileFragmet";
     private int section_number;
 
     private OnFragmentInteractionListener mListener;
@@ -34,8 +36,8 @@ public class ProfileFragment extends Fragment {
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static SettingsFragment newInstance(int section_number) {
-        SettingsFragment fragment = new SettingsFragment();
+    public static ProfileFragment newInstance(int section_number) {
+        ProfileFragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, section_number);
         fragment.setArguments(args);
@@ -60,6 +62,7 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         frame = inflater.inflate(R.layout.fragment_profile, container, false);
+        Log.i(TAG,"inflated frame");
         return frame;
     }
 
@@ -108,5 +111,4 @@ public class ProfileFragment extends Fragment {
         // TODO: Update argument type and name
         public void onFragmentInteraction(int id);
     }
-
 }
