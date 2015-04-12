@@ -3,14 +3,26 @@ package edu.mit.dormbell.dormbell;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import edu.mit.dormbell.MainActivity;
 import edu.mit.dormbell.R;
@@ -24,25 +36,32 @@ import edu.mit.dormbell.R;
  * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
  * interface.
  */
-public class DoorbellsFragment extends ListFragment implements AbsListView.OnItemClickListener {
+public class DoorbellsFragment extends ListFragment implements AbsListView.OnItemClickListener,
+Validator.ValidationListener {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
+    private static final String TAG = "DoorbellsFragment";
+    private static MainActivity context = MainActivity.context;
 
-    // TODO: Rename and change types of parameters
     private int section_number;
 
     private OnFragmentInteractionListener mListener;
+    private View frame;
 
+    @NotEmpty(message = "this door needs a name")
+    private EditText addLockText;
+
+    private Validator validator;
     /**
      * The fragment's ListView/GridView.
      */
     private AbsListView mListView;
-
+    private ArrayList<String> contentList;
     /**
      * The Adapter which will be used to populate the ListView/GridView with
      * Views.
      */
-    private ListAdapter mAdapter;
+    private ArrayAdapter listAdapter;
 
     public static DoorbellsFragment newInstance(int section_number) {
         DoorbellsFragment fragment = new DoorbellsFragment();
@@ -60,31 +79,94 @@ public class DoorbellsFragment extends ListFragment implements AbsListView.OnIte
     }
 
     @Override
+    public void onValidationSucceeded() {
+        Log.i(TAG,"validation succeeded");
+        try {
+            String newLock = ((EditText) frame.findViewById(R.id.addLockText)).getText().toString();
+            //context.appData.getJSONArray("locks").put(newLock);
+            contentList.add(newLock);
+            //listAdapter.notifyDataSetChanged();
+            Log.i(TAG,"data set changed");
+        } catch (Exception e) {
+        }
+    }
+
+    @Override
+    public void onValidationFailed(List<ValidationError> errors) {
+        for (ValidationError error : errors) {
+            View view = error.getView();
+            String message = error.getCollatedErrorMessage(context);
+
+            // Display error messages ;)
+            if (view == addLockText) {
+                addLockText.setError(message);
+            }
+        }
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
             section_number = getArguments().getInt(ARG_SECTION_NUMBER);
         }
-
-        // TODO: Change Adapter to display your content
-        mAdapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.list, new String[]{});
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_doorbells, container, false);
+        frame = inflater.inflate(R.layout.fragment_doorbells, container, false);
+
+        validator = new Validator(this);
+        validator.setValidationListener(this);
+
+        addLockText = (EditText) frame.findViewById(R.id.addLockText);
+
+        contentList = new ArrayList<String>();
+
+        try {
+            JSONArray lockSon = MainActivity.appData.getJSONArray("locks");
+            int len = lockSon.length();
+            for (int i=0;i<len;i++){
+                contentList.add(lockSon.get(i).toString());
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.i(TAG,contentList.toString());
+        listAdapter = new ArrayAdapter<String>(frame.getContext(),android.R.layout.simple_list_item_1,contentList);
 
         // Set the adapter
-        mListView = (AbsListView) view.findViewById(android.R.id.list);
-        ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
+        mListView = (ListView) frame.findViewById(android.R.id.list);
+        mListView.setAdapter(listAdapter);
 
         // Set OnItemClickListener so we can be notified on item clicks
         mListView.setOnItemClickListener(this);
 
-        return view;
+        /*mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() { //TODO: Implement this section to allow people to remove locks with a single click
+            @Override
+            public void onItemClick(AdapterView<?> parent, final View view, int position, long id)
+            {
+                view.animate().setDuration(1000).alpha(0);
+                view.animate().setDuration(1000).alpha(1);
+                if((ColorDrawable)view.getBackground() == null)
+                {
+                    view.setBackgroundColor(Color.rgb(224, 0, 224));
+                    while(mateSelected.size() < position+1) mateSelected.add(false);
+                    mateSelected.set(position, true);
+                }
+                else
+                {
+                    view.setBackground(null);
+                    while(mateSelected.size() < position+1) mateSelected.add(false);
+                    mateSelected.set(position, false);
+                }
+            }
+        });*/
+
+        return frame;
     }
 
     @Override
@@ -125,6 +207,10 @@ public class DoorbellsFragment extends ListFragment implements AbsListView.OnIte
         if (emptyView instanceof TextView) {
             ((TextView) emptyView).setText(emptyText);
         }
+    }
+
+    public void addLock(View v) {
+        validator.validate();
     }
 
     /**

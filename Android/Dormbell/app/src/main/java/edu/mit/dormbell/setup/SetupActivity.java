@@ -166,9 +166,9 @@ public class SetupActivity extends Activity implements Validator.ValidationListe
 
                 HttpGet httpGet;
                 if(precise)
-                    httpGet = new HttpGet("http://18.181.2.180:3667?checkName="+name[0].toLowerCase(Locale.US)+"&regId="+ GCMIntentService.getRegistrationId(context));
+                    httpGet = new HttpGet("http://18.239.0.155:3667?checkName="+name[0].toLowerCase(Locale.US)+"&regId="+ GCMIntentService.getRegistrationId(context));
                 else
-                    httpGet = new HttpGet("http://18.181.2.180:3667?checkName="+name[0].toLowerCase(Locale.US));
+                    httpGet = new HttpGet("http://18.239.0.155:3667?checkName="+name[0].toLowerCase(Locale.US));
 
                 // 7. Set some headers to inform server about the type of the content
                 httpGet.setHeader("Accept", "application/json");

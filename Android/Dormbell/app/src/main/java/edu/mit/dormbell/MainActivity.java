@@ -34,7 +34,9 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -51,8 +53,6 @@ import edu.mit.dormbell.dormbell.LeaderboardFragment;
 import edu.mit.dormbell.dormbell.ProfileFragment;
 import edu.mit.dormbell.dormbell.RingRingFragment;
 import edu.mit.dormbell.dormbell.SettingsFragment;
-import edu.mit.dormbell.org.json.json.JSONArray;
-import edu.mit.dormbell.org.json.json.JSONObject;
 import edu.mit.dormbell.setup.SetupActivity;
 
 public class MainActivity extends ActionBarActivity
@@ -120,7 +120,7 @@ public class MainActivity extends ActionBarActivity
         }
 
         if(getIntent().getDataString() != null)
-            if(getIntent().getDataString().contains("18.181.2.180:666"))
+            if(getIntent().getDataString().contains("18.239.0.155:666"))
             {
                 final String data = getIntent().getDataString().substring(24);
                 if(data.startsWith("e"))
@@ -302,7 +302,7 @@ public class MainActivity extends ActionBarActivity
                     HttpClient httpclient = new DefaultHttpClient();
 
                     // 2. make POST request to the given URL
-                    HttpPost httpPost = new HttpPost("http://18.181.2.180:3667");
+                    HttpPost httpPost = new HttpPost("http://18.239.0.155:3667");
 
                     String json = "";
 
@@ -464,7 +464,7 @@ public class MainActivity extends ActionBarActivity
     {
         ((RingRingFragment) fragments[RING_RING]).onRing(v);
     }
-
+    public void addLock(View v){((DoorbellsFragment) fragments[DOORBELLS]).addLock(v);}
     @Override
     protected void onPause()
     {

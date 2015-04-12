@@ -7,13 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.json.*;
+
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import edu.mit.dormbell.MainActivity;
 import edu.mit.dormbell.R;
-import edu.mit.dormbell.org.json.json.JSONObject;
 
 
 /**
@@ -70,7 +71,7 @@ public class RingRingFragment extends Fragment {
 
     public void onRing(View v) {
 
-        /*JSONObject jsonObject = new JSONObject(); //TODO: Fix DoorbellsFragment so this testing code can be removed
+        JSONObject jsonObject = new JSONObject(); //TODO: Fix DoorbellsFragment so this testing code can be removed
         try {
             JSONArray locks = new JSONArray();
             locks.put("everybodyusingtheappfortesting");
@@ -80,7 +81,7 @@ public class RingRingFragment extends Fragment {
             context.sendJSONToBackend(jsonObject);
         } catch (JSONException e) {
             e.printStackTrace();
-        }*/
+        }
 
         JSONObject data = new JSONObject();
         try {
