@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import org.json.JSONException;
 
 import edu.mit.dormbell.MainActivity;
 import edu.mit.dormbell.R;
@@ -62,7 +64,11 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         frame = inflater.inflate(R.layout.fragment_profile, container, false);
-        Log.i(TAG,"inflated frame");
+        try {
+            ((TextView) frame.findViewById(R.id.fullname)).setText(context.appData.getString("fullname"));
+            ((TextView) frame.findViewById(R.id.username)).setText(context.appData.getString("username"));
+        } catch (JSONException e) {
+        }
         return frame;
     }
 

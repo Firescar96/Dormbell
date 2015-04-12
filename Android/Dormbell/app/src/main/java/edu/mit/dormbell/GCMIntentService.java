@@ -35,11 +35,11 @@ import android.util.Log;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import edu.mit.dormbell.org.json.json.JSONObject;
 
 /**
  * This class manages Google Cloud Messaging push notifications and CloudQuery

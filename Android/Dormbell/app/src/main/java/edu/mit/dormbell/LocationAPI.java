@@ -11,8 +11,7 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
-import edu.mit.dormbell.org.json.json.JSONObject;
-
+import org.json.JSONObject;
 
 public class LocationAPI implements
 GoogleApiClient.ConnectionCallbacks,

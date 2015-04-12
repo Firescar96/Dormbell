@@ -20,12 +20,15 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Nchinda Nchinda"
         android:id="@+id/fullname"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/imageView"
-        android:layout_marginTop="36dp"
-        android:layout_alignBottom="@+id/imageView"
         android:textSize="30sp"
-        android:textColor="#ffffff" />
+        android:textColor="#ffffff"
+        android:layout_alignBottom="@+id/imageView"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="false"
+        android:minLines="2"
+        android:layout_toEndOf="@+id/imageView"
+        android:layout_alignLeft="@+id/username"
+        android:layout_alignStart="@+id/username" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -76,4 +79,16 @@
         android:layout_alignTop="@+id/karmaDescription"
         android:layout_alignLeft="@+id/rating"
         android:layout_alignStart="@+id/rating" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="nchinda2"
+        android:id="@+id/username"
+        android:textSize="30sp"
+        android:textColor="#ffffff"
+        android:layout_below="@+id/imageView"
+        android:layout_alignRight="@+id/rating"
+        android:layout_alignEnd="@+id/rating" />
 </RelativeLayout>
