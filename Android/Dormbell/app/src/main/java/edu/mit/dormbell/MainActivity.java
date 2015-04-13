@@ -120,7 +120,7 @@ public class MainActivity extends ActionBarActivity
         }
 
         if(getIntent().getDataString() != null)
-            if(getIntent().getDataString().contains("18.239.0.155:666"))
+            if(getIntent().getDataString().contains(""+getString(R.string.backend_address)+":666"))
             {
                 final String data = getIntent().getDataString().substring(24);
                 if(data.startsWith("e"))
@@ -187,7 +187,7 @@ public class MainActivity extends ActionBarActivity
             String usrnm = new String();
             appData = new JSONObject();
             try {
-                appData.put("locations", locks);
+                appData.put("locks", locks);
                 appData.put("fullname", fulusr);
                 appData.put("username", usrnm);
             } catch (Exception e1) {}
@@ -198,7 +198,7 @@ public class MainActivity extends ActionBarActivity
      * Save the appData JSON to file
      * @param fileDir to save file to
      */
-    public static void closeAppData(String fileDir)
+    public static void saveAppData(String fileDir)
     {
         File defFile = new File(fileDir+"/appData.txt");
         PrintWriter out;
@@ -226,6 +226,17 @@ public class MainActivity extends ActionBarActivity
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         if(cm.getActiveNetworkInfo() == null)
             Toast.makeText(context, "No Internet connection detected, Dormbell entering offline mode", Toast.LENGTH_SHORT).show();
+        else {
+            try {                                   //TODO: Determine if it's a good idea to send the locks to backend on every resume
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("locks", appData.getJSONArray("locks"));
+                jsonObject.put("update", true);
+                jsonObject.put("username", appData.getString("username"));
+                context.sendJSONToBackend(jsonObject);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
 
         if (prefs.getBoolean("firstrun", true)) {
             Intent myIntent = new Intent(this, SetupActivity.class);
@@ -302,7 +313,7 @@ public class MainActivity extends ActionBarActivity
                     HttpClient httpclient = new DefaultHttpClient();
 
                     // 2. make POST request to the given URL
-                    HttpPost httpPost = new HttpPost("http://18.239.0.155:3667");
+                    HttpPost httpPost = new HttpPost("http://"+context.getString(R.string.backend_address)+":3667");
 
                     String json = "";
 
@@ -469,13 +480,13 @@ public class MainActivity extends ActionBarActivity
     protected void onPause()
     {
         super.onPause() ;
-        closeAppData(getFilesDir().getAbsolutePath());
+        saveAppData(getFilesDir().getAbsolutePath());
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        closeAppData(getFilesDir().getAbsolutePath());
+        saveAppData(getFilesDir().getAbsolutePath());
 
         locServices.disconnect();
     }

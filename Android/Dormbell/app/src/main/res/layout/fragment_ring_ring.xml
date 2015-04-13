@@ -9,14 +9,14 @@
     android:orientation="vertical">
 
     <Spinner
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/locationSpinner"
+        android:id="@+id/lockSpinner"
         android:layout_gravity="top|center_horizontal"
         android:spinnerMode="dropdown"
         android:prompt="@string/location_spinner_prompt"
         android:focusable="false"
-        android:background="@color/primary_material_light"
+        android:background="@android:drawable/btn_dropdown"
         android:layout_alignParentTop="true"
         android:layout_alignWithParentIfMissing="false"
         android:gravity="center" />

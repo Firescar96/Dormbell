@@ -6,12 +6,17 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
-import org.json.*;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 
 import edu.mit.dormbell.MainActivity;
 import edu.mit.dormbell.R;
@@ -37,6 +42,9 @@ public class RingRingFragment extends Fragment {
 
     private View frame;
     private int section_number;
+
+    private ArrayList<String> lockList;
+    private Spinner spinner;
 
     /**
      * Returns a new instance of this fragment for the given section
@@ -66,29 +74,41 @@ public class RingRingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         frame = inflater.inflate(R.layout.fragment_ring_ring, container, false);
+
+        spinner = (Spinner) frame.findViewById(R.id.lockSpinner);
+
+        lockList = new ArrayList<String>();
+        try {
+            JSONArray lockSon = MainActivity.appData.getJSONArray("locks");
+            int len = lockSon.length();
+            for (int i=0;i<len;i++){
+                lockList.add(lockSon.get(i).toString());
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(frame.getContext(),android.R.layout.simple_list_item_1,lockList);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
+
         return frame;
     }
 
     public void onRing(View v) {
 
-        JSONObject jsonObject = new JSONObject(); //TODO: Fix DoorbellsFragment so this testing code can be removed
-        try {
-            JSONArray locks = new JSONArray();
-            locks.put("everybodyusingtheappfortesting");
-            jsonObject.put("locks", locks);
-            jsonObject.put("update", true);
-            jsonObject.put("username", context.appData.getString("username"));
-            context.sendJSONToBackend(jsonObject);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        String lock = spinner.getSelectedItem().toString();
+        if(lock.isEmpty())
+            return;
 
         JSONObject data = new JSONObject();
         try {
+
             data.put("ring", true);
             data.put("sender", context.appData.getString("username"));
-            data.put("lock","everybodyusingtheappfortesting");
-            data.put("hash",computeSHA1(context.appData.getString("username")+"everybodyusingtheappfortesting" ));
+            data.put("lock",lock);
+            data.put("hash",computeSHA1(context.appData.getString("username")+lock));
             context.sendJSONToBackend(data);
         }
         catch (Exception e) {

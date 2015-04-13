@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -108,7 +109,7 @@ public class SetupActivity extends Activity implements Validator.ValidationListe
             GCMIntentService.registerInBackground();
 
             context.getPreferences(MODE_PRIVATE).edit().putBoolean("firstrun", false).commit();//TODO: Somehow ensure that the registration id eventually gets sent to the backend before this step
-            context.closeAppData(context.getFilesDir().getAbsolutePath());
+            context.saveAppData(context.getFilesDir().getAbsolutePath());
             finish();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -162,13 +163,13 @@ public class SetupActivity extends Activity implements Validator.ValidationListe
                 HttpClient httpclient = new DefaultHttpClient();
 
                 // 2. make POST request to the given URL
-                System.out.println();
+                Log.i(TAG,""+getString(R.string.backend_address));
 
                 HttpGet httpGet;
                 if(precise)
-                    httpGet = new HttpGet("http://18.239.0.155:3667?checkName="+name[0].toLowerCase(Locale.US)+"&regId="+ GCMIntentService.getRegistrationId(context));
+                    httpGet = new HttpGet("http://"+getString(R.string.backend_address)+":3667?checkName="+name[0].toLowerCase(Locale.US)+"&regId="+ GCMIntentService.getRegistrationId(context));
                 else
-                    httpGet = new HttpGet("http://18.239.0.155:3667?checkName="+name[0].toLowerCase(Locale.US));
+                    httpGet = new HttpGet("http://"+getString(R.string.backend_address)+":3667?checkName="+name[0].toLowerCase(Locale.US));
 
                 // 7. Set some headers to inform server about the type of the content
                 httpGet.setHeader("Accept", "application/json");
