@@ -114,6 +114,8 @@ if (Meteor.isServer) {
 		toUsr = []
 		for(var i in allUsr)
 		{
+			if(allUsr[i].locks == undefined)
+				continue;
 			if(allUsr[i].locks.indexOf(query.lock) != -1)
 				toUsr.push(allUsr[i]);
 		}
@@ -140,7 +142,7 @@ if (Meteor.isServer) {
 			var hostUsr = Users.findOne({username:query.username});
 			//console.log(toUsr[i].location);
 			//console.log(Users.findOne({username:query.event.host}));
-			if(toUsr[i].location != undefined)
+			if(toUsr[i].location != undefined && hostUsr.location != undefined)
 			{
 				var latPow = Math.pow(parseInt(hostUsr.location.latitude)-parseInt(toUsr[i].location.latitude),2);
 				var longPow = Math.pow(parseInt(hostUsr.location.longitude)-parseInt(toUsr[i].location.longitude),2);
