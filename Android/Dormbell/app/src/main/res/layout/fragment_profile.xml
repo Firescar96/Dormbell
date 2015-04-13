@@ -5,30 +5,56 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView"
-        android:src="@drawable/adventuretime"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Nchinda Nchinda"
-        android:id="@+id/fullname"
-        android:textSize="30sp"
-        android:textColor="#ffffff"
-        android:layout_alignBottom="@+id/imageView"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="false"
-        android:minLines="2"
-        android:layout_toEndOf="@+id/imageView"
-        android:layout_alignLeft="@+id/username"
-        android:layout_alignStart="@+id/username" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:src="@drawable/adventuretime"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_weight=".5" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight=".5">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Nchinda Nchinda"
+                android:id="@+id/fullname"
+                android:textSize="30sp"
+                android:textColor="#ffffff"
+                android:minLines="2"
+                android:layout_above="@+id/username"
+                android:layout_toRightOf="@+id/imageView"
+                android:layout_toEndOf="@+id/imageView"
+                android:layout_weight=".5" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="nchinda2"
+                android:id="@+id/username"
+                android:textSize="30sp"
+                android:textColor="#ffffff"
+                android:layout_below="@+id/imageView"
+                android:layout_toRightOf="@+id/imageView"
+                android:layout_toEndOf="@+id/imageView"
+                android:layout_weight=".5" />
+        </LinearLayout>
+
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
@@ -38,7 +64,6 @@
         android:id="@+id/ratingDescription"
         android:textSize="30sp"
         android:textColor="#ffffff"
-        android:layout_below="@+id/imageView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="175dp" />
@@ -65,8 +90,7 @@
         android:textSize="30sp"
         android:textColor="#ffffff"
         android:layout_alignTop="@+id/ratingDescription"
-        android:layout_toRightOf="@+id/imageView"
-        android:layout_toEndOf="@+id/imageView" />
+        android:layout_alignParentRight="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -77,18 +101,6 @@
         android:textSize="30sp"
         android:textColor="#ffffff"
         android:layout_alignTop="@+id/karmaDescription"
-        android:layout_alignLeft="@+id/rating"
-        android:layout_alignStart="@+id/rating" />
+        android:layout_alignLeft="@+id/rating" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="nchinda2"
-        android:id="@+id/username"
-        android:textSize="30sp"
-        android:textColor="#ffffff"
-        android:layout_below="@+id/imageView"
-        android:layout_alignRight="@+id/rating"
-        android:layout_alignEnd="@+id/rating" />
 </RelativeLayout>

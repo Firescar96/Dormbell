@@ -123,7 +123,7 @@ public class GCMIntentService extends IntentService {
                         Notify(sender+" is outside","get them at " + lock, 0);
 	                }
 
-                	MainActivity.closeAppData(getFilesDir().getAbsolutePath());
+                	MainActivity.saveAppData(getFilesDir().getAbsolutePath());
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}

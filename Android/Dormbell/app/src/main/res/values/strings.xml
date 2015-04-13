@@ -26,4 +26,6 @@
     <string name="settings_delete">Delete My Account</string>
 
     <string name="karma_leaders">Karma Leaders</string>
+
+    <string name="backend_address">18.239.0.155</string>
 </resources>

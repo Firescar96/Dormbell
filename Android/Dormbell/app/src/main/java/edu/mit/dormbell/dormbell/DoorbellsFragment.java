@@ -20,6 +20,7 @@ import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,14 +81,19 @@ Validator.ValidationListener {
 
     @Override
     public void onValidationSucceeded() {
-        Log.i(TAG,"validation succeeded");
         try {
             String newLock = ((EditText) frame.findViewById(R.id.addLockText)).getText().toString();
-            //context.appData.getJSONArray("locks").put(newLock);
+            context.appData.getJSONArray("locks").put(newLock);
             contentList.add(newLock);
-            //listAdapter.notifyDataSetChanged();
-            Log.i(TAG,"data set changed");
-        } catch (Exception e) {
+            listAdapter.notifyDataSetChanged();
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("locks", context.appData.getJSONArray("locks"));
+            jsonObject.put("update", true);
+            jsonObject.put("username", context.appData.getString("username"));
+            context.sendJSONToBackend(jsonObject);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
