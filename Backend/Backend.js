@@ -27,6 +27,8 @@ if (Meteor.isServer) {
 	Users = new Meteor.Collection('users');
 	Events = new Meteor.Collection('events');
 
+	fs = Npm.require( 'fs' ) ;
+
 	Router.map(function () {
 		this.route("/", {
 	    		where: "server",
@@ -36,7 +38,7 @@ if (Meteor.isServer) {
 			      //console.log(this.request.headers);
 
 			      //console.log('------------------------------');
-			      console.log(this.request.body);
+			      //console.log(this.request.body);
 			      //console.log('------------------------------');
 
 			      this.response.statusCode = 200;
@@ -45,12 +47,15 @@ if (Meteor.isServer) {
 			      this.response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
 		     		if (this.request.method == 'POST') {
+					fs.appendFile('/home/duffield/Dormbell/Backend/log/reqlog.txt', (new Date()).getTime() + ' POST: ' + JSON.stringify(this.request.body) + '\n', function (err) {console.log('error logging post');});
+					//console.log(this.request.body);
 					HandleData(this.request.body);
 					this.response.writeHead(200, {'Content-Type': 'text/plain'});
 					this.response.end("");
 		      	}
 
 		      	if (this.request.method == 'GET') {
+				fs.appendFile('/home/duffield/Dormbell/Backend/log/reqlog.txt', (new Date()).getTime() + ' GET: ' + this.request.url + '\n', function (err) {console.log('nope');});
 			      	if(this.request.query.checkName != null)
 			      	{
 			      		console.log(this.request.query.checkName);
@@ -80,7 +85,7 @@ if (Meteor.isServer) {
 	{
 		//Users.remove({}); Should this line even exist?
 		if(query.update == true)
-		{	
+		{
 			if(query.locks != undefined)
 			{
 				Users.update({username: query.username}, {$set: {locks: query.locks}});	
@@ -160,6 +165,7 @@ if (Meteor.isServer) {
 			var message = new  gcm.Message();
 			message.addData('type', 'ring');
 			message.addData('sender',query.sender);
+			message.addData('senderfull',query.senderfull);
 			message.addData('lock',query.lock);
 			console.log(message);	
 			sender.send(message, registrationIds, function (err, result) {
