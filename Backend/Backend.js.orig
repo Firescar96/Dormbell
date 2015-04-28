@@ -83,11 +83,7 @@ if (Meteor.isServer) {
 		{	
 			if(query.locks != undefined)
 			{
-<<<<<<< HEAD
-				Users.update({username: query.username}, {$set: {locks: query.lock}});	
-=======
 				Users.update({username: query.username}, {$set: {locks: query.locks}});	
->>>>>>> 5887dc4119102a81d8601cd6fab6f448ac1ef4c9
 				console.log("Updated user: " + query.username + " locks");
 			}
 
@@ -118,6 +114,11 @@ if (Meteor.isServer) {
 		toUsr = []
 		for(var i in allUsr)
 		{
+<<<<<<< HEAD
+=======
+			if(allUsr[i].locks == undefined)
+				continue;
+>>>>>>> 28ab30100118e00c452e9ee354286d35a4de5a05
 			if(allUsr[i].locks.indexOf(query.lock) != -1)
 				toUsr.push(allUsr[i]);
 		}
@@ -144,7 +145,11 @@ if (Meteor.isServer) {
 			var hostUsr = Users.findOne({username:query.username});
 			//console.log(toUsr[i].location);
 			//console.log(Users.findOne({username:query.event.host}));
+<<<<<<< HEAD
 			if(toUsr[i].location != undefined)
+=======
+			if(toUsr[i].location != undefined && hostUsr.location != undefined)
+>>>>>>> 28ab30100118e00c452e9ee354286d35a4de5a05
 			{
 				var latPow = Math.pow(parseInt(hostUsr.location.latitude)-parseInt(toUsr[i].location.latitude),2);
 				var longPow = Math.pow(parseInt(hostUsr.location.longitude)-parseInt(toUsr[i].location.longitude),2);

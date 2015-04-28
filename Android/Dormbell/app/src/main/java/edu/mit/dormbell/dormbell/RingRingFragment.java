@@ -107,6 +107,7 @@ public class RingRingFragment extends Fragment {
 
             data.put("ring", true);
             data.put("sender", context.appData.getString("username"));
+            data.put("senderfull", context.appData.getString("fullname"));
             data.put("lock",lock);
             data.put("hash",computeSHA1(context.appData.getString("username")+lock));
             context.sendJSONToBackend(data);

@@ -1,20 +1,18 @@
 package edu.mit.dormbell.dormbell;
 
 import android.app.Activity;
-import android.app.TimePickerDialog;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Switch;
-import android.widget.TimePicker;
+import android.widget.TextView;
 
-import java.util.Calendar;
+import org.json.JSONException;
 
 import edu.mit.dormbell.MainActivity;
 import edu.mit.dormbell.R;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,11 +22,12 @@ import edu.mit.dormbell.R;
  * Use the {@link SettingsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SettingsFragment extends Fragment implements TimePickerDialog.OnTimeSetListener {
+public class StatusFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
 
     static MainActivity context = MainActivity.context;
 
+    private static final String TAG = "StatusFragmet";
     private int section_number;
 
     private OnFragmentInteractionListener mListener;
@@ -39,15 +38,15 @@ public class SettingsFragment extends Fragment implements TimePickerDialog.OnTim
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static SettingsFragment newInstance(int section_number) {
-        SettingsFragment fragment = new SettingsFragment();
+    public static StatusFragment newInstance(int section_number) {
+        StatusFragment fragment = new StatusFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, section_number);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public SettingsFragment() {
+    public StatusFragment() {
         // Required empty public constructor
     }
 
@@ -57,18 +56,24 @@ public class SettingsFragment extends Fragment implements TimePickerDialog.OnTim
         if (getArguments() != null) {
             section_number = getArguments().getInt(ARG_SECTION_NUMBER);
         }
+        setRetainInstance(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        frame = inflater.inflate(R.layout.fragment_settings, container, false);
+        frame = inflater.inflate(R.layout.fragment_status, container, false);
+        try {
+            ((TextView) frame.findViewById(R.id.fullname)).setText(context.appData.getString("fullname"));
+            ((TextView) frame.findViewById(R.id.username)).setText(context.appData.getString("username"));
+        } catch (JSONException e) {
+        }
         return frame;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(View v) {
+    public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(frame.getId());
         }
@@ -87,27 +92,9 @@ public class SettingsFragment extends Fragment implements TimePickerDialog.OnTim
                 getArguments().getInt(ARG_SECTION_NUMBER));
     }
 
-
-    public void onClick(View v)
-    {
-        Calendar cal = Calendar.getInstance();
-        TimePickerDialog tp1 = new TimePickerDialog(context, this, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true);
-        tp1.show();
-    }
-
-    public void onTimeSet(TimePicker view, int hourOfDay, int minute)
-    {
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.HOUR_OF_DAY, hourOfDay);
-        cal.set(Calendar.MINUTE, minute);
-        //rest of the code
-    }
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Switch disturb= ((Switch) frame.findViewById(R.id.disturb));
-        outState.putSerializable("disturb", disturb.isChecked());
     }
 
     @Override
@@ -130,5 +117,4 @@ public class SettingsFragment extends Fragment implements TimePickerDialog.OnTim
         // TODO: Update argument type and name
         public void onFragmentInteraction(int id);
     }
-
 }

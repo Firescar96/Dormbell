@@ -53,11 +53,12 @@ import edu.mit.dormbell.dormbell.LeaderboardFragment;
 import edu.mit.dormbell.dormbell.ProfileFragment;
 import edu.mit.dormbell.dormbell.RingRingFragment;
 import edu.mit.dormbell.dormbell.SettingsFragment;
+import edu.mit.dormbell.dormbell.StatusFragment;
 import edu.mit.dormbell.setup.SetupActivity;
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks,
-        ProfileFragment.OnFragmentInteractionListener, RingRingFragment.OnFragmentInteractionListener,
+        StatusFragment.OnFragmentInteractionListener, RingRingFragment.OnFragmentInteractionListener,
         DoorbellsFragment.OnFragmentInteractionListener, LeaderboardFragment.OnFragmentInteractionListener,
         SettingsFragment.OnFragmentInteractionListener, FeedbackFragment.OnFragmentInteractionListener {
 
@@ -73,6 +74,7 @@ public class MainActivity extends ActionBarActivity
     public static final String EXTRA_MESSAGE = "message";
     public static final String PROPERTY_REG_ID = "registration_id";
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+    private final static String TAG = "Main Activity";
 
     public static MainActivity context;
     public static JSONObject appData;
@@ -82,6 +84,7 @@ public class MainActivity extends ActionBarActivity
     String regid;
 
     //identifiers for the fragments
+    private static final int STATUS=0;
     private static final int PROFILE=0;
     private static final int RING_RING=1;
     private static final int DOORBELLS=2;
@@ -138,18 +141,28 @@ public class MainActivity extends ActionBarActivity
             }
 
         Bundle data = getIntent().getExtras();
-        if(data!=null)
-            Log.i("mainact", data.toString());
-        if(data != null)
-            if(data.getString("sender") != null && data.getString("sender").equals("chat"))
+        if(data != null) {
+            if(data.getString("flag").equals("ringring")) {
+                Log.i(TAG,"Data not null and is ringring");
+                Fragment profFrag = ProfileFragment.newInstance(PROFILE, data.getBundle("data"));
+                FragmentManager fm = getSupportFragmentManager();
+                fm.beginTransaction()
+                        .replace(R.id.container, profFrag)
+                        .commit();
+            }
+
+            if (data.getString("sender") != null && data.getString("sender").equals("chat"))
                 try {
                     JSONArray eve = appData.getJSONArray("events");
-                    for(int i =0; i < eve.length(); i++) {
+                    for (int i = 0; i < eve.length(); i++) {
                         JSONObject curEve = eve.getJSONObject(i);
-                        if(curEve.getString("hash").equals(data.get("hash"))) {
+                        if (curEve.getString("hash").equals(data.get("hash"))) {
                         }
                     }
-                } catch (JSONException e) {e.printStackTrace();}
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+        }
 
         locServices = new LocationAPI();
     }
@@ -169,7 +182,7 @@ public class MainActivity extends ActionBarActivity
         try {
             BufferedReader br = new BufferedReader(new FileReader(defFile));
             String line;
-            StringBuilder datBuf = new StringBuilder();
+02            StringBuilder datBuf = new StringBuilder();
             while ((line = br.readLine()) != null) {
                 datBuf.append(line);
                 datBuf.append('\n');
@@ -313,7 +326,7 @@ public class MainActivity extends ActionBarActivity
                     HttpClient httpclient = new DefaultHttpClient();
 
                     // 2. make POST request to the given URL
-                    HttpPost httpPost = new HttpPost("http://"+context.getString(R.string.backend_address)+":3667");
+                    HttpPost httpPost = new HttpPost("http://"+context.getString(R.string.backend_address));
 
                     String json = "";
 
@@ -363,9 +376,9 @@ public class MainActivity extends ActionBarActivity
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
         switch (position) {
-            case PROFILE:
+            case STATUS:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, fragments[PROFILE])
+                        .replace(R.id.container, fragments[STATUS])
                         .commit();
                 break;
             case RING_RING:
@@ -399,7 +412,7 @@ public class MainActivity extends ActionBarActivity
     public void initFragments()
     {
         fragments = new Fragment[NUM_FRAGMENTS];
-        fragments[PROFILE] = ProfileFragment.newInstance(PROFILE);
+        fragments[STATUS] = StatusFragment.newInstance(STATUS);
         fragments[RING_RING] = RingRingFragment.newInstance(RING_RING);
         fragments[DOORBELLS] = DoorbellsFragment.newInstance(DOORBELLS);
         fragments[LEADERBOARD] = LeaderboardFragment.newInstance(LEADERBOARD);
@@ -409,7 +422,7 @@ public class MainActivity extends ActionBarActivity
 
     public void onSectionAttached(int number) {
         switch (number) {
-            case PROFILE:
+            case STATUS:
                 mTitle = getString(R.string.title_section1);
                 break;
             case RING_RING:

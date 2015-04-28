@@ -1,59 +1,57 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="edu.mit.dormbell.ProfileFragment"
+    android:layout_height="match_parent" tools:context="edu.mit.dormbell.dormbell.ProfileFragment"
     android:background="#800000">
 
     <!-- TODO: Update blank fragment layout -->
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:src="@drawable/adventuretime"
+        android:layout_weight=".5"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/nameLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/imageView"
+        android:layout_marginTop="30dp">
 
-        <ImageView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageView"
-            android:src="@drawable/adventuretime"
-            android:layout_alignParentTop="true"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Nchinda Nchinda"
+            android:id="@+id/fullname"
+            android:textSize="30sp"
+            android:textColor="#ffffff"
+            android:minLines="2"
+            android:layout_weight=".5"
+            android:layout_above="@+id/ratingDescription"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_weight=".5" />
+            android:layout_alignParentStart="true" />
 
-        <LinearLayout
-            android:orientation="vertical"
+        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight=".5">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Nchinda Nchinda"
-                android:id="@+id/fullname"
-                android:textSize="30sp"
-                android:textColor="#ffffff"
-                android:minLines="2"
-                android:layout_above="@+id/username"
-                android:layout_toRightOf="@+id/imageView"
-                android:layout_toEndOf="@+id/imageView"
-                android:layout_weight=".5" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="nchinda2"
-                android:id="@+id/username"
-                android:textSize="30sp"
-                android:textColor="#ffffff"
-                android:layout_below="@+id/imageView"
-                android:layout_toRightOf="@+id/imageView"
-                android:layout_toEndOf="@+id/imageView"
-                android:layout_weight=".5" />
-        </LinearLayout>
-
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="nchinda2"
+            android:id="@+id/username"
+            android:textSize="30sp"
+            android:textColor="#ffffff"
+            android:layout_weight=".5"
+            android:layout_alignBaseline="@+id/fullname"
+            android:layout_alignBottom="@+id/fullname"
+            android:layout_toRightOf="@+id/fullname"
+            android:layout_toEndOf="@+id/fullname" />
     </LinearLayout>
 
     <TextView
@@ -64,9 +62,11 @@
         android:id="@+id/ratingDescription"
         android:textSize="30sp"
         android:textColor="#ffffff"
+        android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="175dp" />
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/nameLayout" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -76,7 +76,7 @@
         android:id="@+id/karmaDescription"
         android:textSize="30sp"
         android:textColor="#ffffff"
-        android:layout_marginTop="41dp"
+        android:layout_marginTop="30dp"
         android:layout_below="@+id/ratingDescription"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />

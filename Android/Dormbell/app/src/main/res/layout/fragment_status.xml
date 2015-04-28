@@ -1,0 +1,127 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context="edu.mit.dormbell.dormbell.ProfileFragment"
+    android:background="#800000">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/nameLayout">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView"
+            android:src="@drawable/adventuretime"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_weight=".5" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight=".5">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Nchinda Nchinda"
+                android:id="@+id/fullname"
+                android:textSize="30sp"
+                android:textColor="#ffffff"
+                android:minLines="2"
+                android:layout_above="@+id/username"
+                android:layout_toRightOf="@+id/imageView"
+                android:layout_toEndOf="@+id/imageView"
+                android:layout_weight=".5" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="nchinda2"
+                android:id="@+id/username"
+                android:textSize="30sp"
+                android:textColor="#ffffff"
+                android:layout_below="@+id/imageView"
+                android:layout_toRightOf="@+id/imageView"
+                android:layout_toEndOf="@+id/imageView"
+                android:layout_weight=".5" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/rating_description"
+        android:id="@+id/ratingDescription"
+        android:textSize="30sp"
+        android:textColor="#ffffff"
+        android:layout_below="@+id/nameLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="25dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/karma_description"
+        android:id="@+id/karmaDescription"
+        android:textSize="30sp"
+        android:textColor="#ffffff"
+        android:layout_below="@+id/ratingDescription"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="99% upvote"
+        android:id="@+id/rating"
+        android:textSize="30sp"
+        android:textColor="#ffffff"
+        android:layout_alignTop="@+id/ratingDescription"
+        android:layout_alignParentRight="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="123"
+        android:id="@+id/karma"
+        android:textSize="30sp"
+        android:textColor="#ffffff"
+        android:layout_alignTop="@+id/karmaDescription"
+        android:layout_alignLeft="@+id/rating" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/list"
+        android:layout_centerHorizontal="true"
+        android:choiceMode="singleChoice"
+        android:background="#b177411d"
+        android:layout_below="@+id/textView3" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Those currently waiting"
+        android:id="@+id/textView3"
+        android:textColor="#ffffffff"
+        android:textSize="20sp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

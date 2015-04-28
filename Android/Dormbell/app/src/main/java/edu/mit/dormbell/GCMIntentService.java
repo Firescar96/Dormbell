@@ -27,7 +27,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Message;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
@@ -113,14 +112,21 @@ public class GCMIntentService extends IntentService {
 	                		return;
 	                	eve.put(eveData);*/
 
-	           			Message msg = new Message();
                         Bundle data = new Bundle();
 
-
                         String sender = extras.getString("sender");
+                        String senderfull = extras.getString("senderfull");
                         String lock = extras.getString("lock");
 
-                        Notify(sender+" is outside","get them at " + lock, 0);
+
+                        Intent ringIntent = new Intent(this, MainActivity.class);
+                        data.putString("sender",sender);
+                        data.putString("senderfull",senderfull);
+                        ringIntent.putExtra("flag","ringring");
+                        ringIntent.putExtra("data",data);
+
+                        Notify(sender+" is outside","get them at " + lock, 0,ringIntent);
+
 	                }
 
                 	MainActivity.saveAppData(getFilesDir().getAbsolutePath());
@@ -132,22 +138,8 @@ public class GCMIntentService extends IntentService {
         MainBroadcastReceiver.completeWakefulIntent(intent);
     }
 
-    /*private static Handler contextHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                if(msg.getData().getString("type").equals("ring"))
-                {
-                    String sender = msg.getData().getString("sender");
-                    String lock = msg.getData().getString("lock");
-
-                	Notify(sender+" is outside","get them at " + lock, 0);
-                }
-            }
-        };
-        */
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-	private void Notify(String notificationTitle, String notificationMessage, int id)
+	private void Notify(String notificationTitle, String notificationMessage, int id, Intent resultIntent)
         {
         	NotificationCompat.Builder mBuilder =
         	        new NotificationCompat.Builder(this)
@@ -155,8 +147,6 @@ public class GCMIntentService extends IntentService {
         	        .setContentTitle(notificationTitle)
         	        .setContentText(notificationMessage)
         	        .setAutoCancel(true);
-        	// Creates an explicit intent for an Activity in your app
-        	Intent resultIntent = new Intent(this,MainActivity.class);
 
         	// The stack builder object will contain an artificial back stack for the
         	// started Activity.
